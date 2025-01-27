@@ -1,0 +1,34 @@
+# Help
+
+[pkg.mc]
+description = "A terminal file manager"
+source = "mc"
+type = "system"
+category = "terminal"
+
+[pkg.code]
+decription = "Microsoft Code editor"
+source = "code"
+type = "system"
+category = "terminal"
+deps = ["shfmt", "shellcheck"]
+
+[pkg.vim]
+decription = "A better vi editor"
+source = "vim"
+type = "system"
+category = "terminal"
+
+[pkg.shfmt]
+decription = "Beautiffy a Shell script"
+source = "shfmt"
+type = "system"
+category = "terminal"
+optional = true
+
+[pkg.shellcheck]
+decription = "A linter for bash scripts"
+source = "shellcheck"
+type = "system"
+category = "terminal"
+optional = true
