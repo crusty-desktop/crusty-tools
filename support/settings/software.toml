@@ -6,6 +6,18 @@ source = "mc"
 type = "system"
 category = "terminal"
 
+[pkg.topgrade]
+decription = "Upgrade everythings"
+source = "topgrade"
+type = "rust"
+deps = ["cargo-update"]
+alias.topgrade = "topgrade --skip-notify --yes --no-self-update"
+
+[pkg.cargo-update]
+source = "cargo-update"
+type = "rust"
+
+
 [pkg.code]
 decription = "Microsoft Code editor"
 source = "code"
@@ -32,3 +44,41 @@ source = "shellcheck"
 type = "system"
 category = "terminal"
 optional = true
+
+[pkg.Tweaks]
+decription = "Tweak various aspects of COSMIC"
+source = "dev.edfloreshz.CosmicTweaks"
+type = "flatpak"
+category = "Cosmic"
+
+[pkg.refine]
+source = "page.tesk.Refine"
+description = "Tweak various aspects of GNOME"
+type = "flatpak"
+category = "Gnome"
+
+[pkg.telegram]
+source = "org.telegram.desktop"
+type = "flatpak"
+category = "Gnome"
+
+[pkg.ripgrep]
+decription = "A modern and fast grep"
+source = "ripgrep"
+executable = "rg"
+type = "rust"
+category = "terminal"
+
+
+[pkg.eza]
+decription = "A modern colorfull ls"
+source = "eza"
+type = "rust"
+category = "terminal"
+alias.lsa = "eza --icons --hyperlink --color-scale --group-directories-first  --all"
+alias.ls = "eza --icons --hyperlink --color-scale --group-directories-first"
+alias.lst = 'eza --tree --level=2 --long --icons --git'
+alias.dir = "eza --icons --hyperlink -l -h --git"
+alias.dirs = "eza --icons --hyperlink -l -h --git --color-scale --total-size"
+
+
