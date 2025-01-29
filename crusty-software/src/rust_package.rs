@@ -40,7 +40,7 @@ impl RustPackage {
 
     fn installing_header(&self) {
         cprintln(&format!(
-            "   [green]+[/] Installing  package [blue]{}[/]",
+            "   [green]+[/] Installing rust package [blue]{}[/]",
             self.source
         ));
         if let Some(description) = &self.description {

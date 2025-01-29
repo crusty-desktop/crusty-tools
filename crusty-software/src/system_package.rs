@@ -1,5 +1,6 @@
 use crate::prelude::InstallOptions;
 use crate::provider::AliasList;
+use ctrem::cprintln;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
@@ -20,8 +21,37 @@ pub struct SystemPackage {
 
 impl SystemPackage {
     pub fn install(&self, options: &InstallOptions) -> color_eyre::Result<()> {
-        println!("Installing: sudo apt install {}", self.source);
+        self.installing_header();
+        let args = vec!["sudo", "apt-get", "install", "-y", &self.source];
+        match crate::utils::run(&args, options) {
+            Ok(_) => {}
+            Err(e) => {
+                cprintln(&format!(
+                    "   [red]-  Error[/] installing system package: [green]{}[/]",
+                    self.source
+                ));
+                if !options.keep_running {
+                    std::process::exit(1);
+                }
+            }
+        }
         Ok(())
+    }
+
+    fn installing_header(&self) {
+        cprintln(&format!(
+            "   [green]+[/] Installing system package [blue]{}[/]",
+            self.source
+        ));
+        if let Some(description) = &self.description {
+            println!("     {}", description);
+        }
+        if let Some(text) = &self.repository {
+            println!("     - Repository: {}", text);
+        }
+        if let Some(text) = &self.documentation {
+            println!("     - Documentation: {}", text);
+        }
     }
 }
 
