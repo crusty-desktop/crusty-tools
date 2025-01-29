@@ -1,0 +1,30 @@
+#
+# Put what you like to install here
+#
+# Run sudo apt-get install -y mc vim shfmt shellcheck
+#
+# [pkg.zsh]
+# [pkg.vim]
+# deps = ["shfmt", "shellcheck"]
+#
+# [pkg.lsd]
+# decription = "A modern colorfull ls"
+# source = "eza"
+# category = "terminal"
+# alias.lsa = "eza --icons --hyperlink --color-scale --group-directories-first  --all"
+# alias.dir = "eza --icons --hyperlink -l -h --git"
+#
+# [pkg.telegram]
+# source = "org.telegram.desktop"
+# type = "flatpak"
+#
+# For system package all fields are optional.
+## executable is used for testing if path exists on the system (for now, it's noise)
+##
+
+[pkg.mc]
+description = "A terminal file manager"
+source = "mc"
+type = "system"
+optional = true
+
