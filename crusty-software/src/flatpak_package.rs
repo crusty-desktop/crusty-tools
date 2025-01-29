@@ -25,7 +25,7 @@ impl FlatpakPackage {
         let args = vec!["flatpak", "install", "-y", &self.source];
         match crate::utils::run(&args, options) {
             Ok(_) => {}
-            Err(e) => {
+            Err(_err) => {
                 cprintln(&format!(
                     "   [red]-  Error[/] installing flatpak: [green]{}[/]",
                     self.source

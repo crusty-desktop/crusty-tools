@@ -25,7 +25,7 @@ impl SystemPackage {
         let args = vec!["sudo", "apt-get", "install", "-y", &self.source];
         match crate::utils::run(&args, options) {
             Ok(_) => {}
-            Err(e) => {
+            Err(_err) => {
                 cprintln(&format!(
                     "   [red]-  Error[/] installing system package: [green]{}[/]",
                     self.source

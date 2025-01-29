@@ -3,7 +3,7 @@ use crusty_software::prelude::*;
 use crusty_software::utils::{get_config, install_color_eyre};
 use std::path::PathBuf;
 
-const APP_NAME: &'static str = "crusty";
+const APP_NAME: &str = "crusty";
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]

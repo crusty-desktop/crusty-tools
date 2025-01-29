@@ -6,7 +6,6 @@ use ctrem::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use toml::de::Error;
 
 pub type AliasList = IndexMap<String, String>;
 
@@ -65,10 +64,10 @@ impl PackageList {
             "[green]+[/] Installing file [blue]{}[/]",
             path.display()
         ));
-        let toml_text = std::fs::read_to_string(&path)?;
+        let toml_text = std::fs::read_to_string(path)?;
         match Self::deserialize(&toml_text) {
             // TODO: Handle errors
-            Ok(list) => list.install_packages(&options)?,
+            Ok(list) => list.install_packages(options)?,
             Err(err) => {
                 let inner = err.to_string();
                 cprintln(&format!(
@@ -85,14 +84,14 @@ impl PackageList {
     }
 
     pub fn install_packages(&self, options: &InstallOptions) -> Result<()> {
-        for (name, package) in self.apt.iter() {
-            package.install(&options)?;
+        for (_name, package) in self.apt.iter() {
+            package.install(options)?;
         }
-        for (name, package) in self.rust.iter() {
-            package.install(&options)?;
+        for (_name, package) in self.rust.iter() {
+            package.install(options)?;
         }
-        for (name, package) in self.flatpak.iter() {
-            package.install(&options)?;
+        for (_name, package) in self.flatpak.iter() {
+            package.install(options)?;
         }
 
         Ok(())

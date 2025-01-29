@@ -25,7 +25,7 @@ impl RustPackage {
         let args = vec!["cargo", "binstall", "-y", &self.source];
         match crate::utils::run(&args, options) {
             Ok(_) => {}
-            Err(e) => {
+            Err(_err) => {
                 cprintln(&format!(
                     "   [red]-  Error[/] installing package: [green]{}[/]",
                     self.source
