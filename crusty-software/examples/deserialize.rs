@@ -27,7 +27,7 @@ fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
     let list = PackageList::deserialize(&EXAMPLE)?;
 
-    let install_option = InstallOptions { verbose: true };
+    let install_option = InstallOptions::default();
     list.install(&install_option)?;
 
     Ok(())

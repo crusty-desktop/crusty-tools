@@ -2,8 +2,11 @@ use crate::flatpak_package::FlatpakPackageList;
 use crate::prelude::RustPackageList;
 use crate::system_package::SystemPackageList;
 use color_eyre::Result;
+use ctrem::*;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
+use toml::de::Error;
 
 pub type AliasList = IndexMap<String, String>;
 
@@ -18,8 +21,21 @@ pub struct PackageList {
     pub flatpak: FlatpakPackageList,
 }
 
+#[derive(Debug, Clone)]
 pub struct InstallOptions {
     pub verbose: bool,
+    pub dry_run: bool,
+    pub keep_running: bool,
+}
+
+impl Default for InstallOptions {
+    fn default() -> Self {
+        Self {
+            verbose: true,
+            dry_run: false,
+            keep_running: false,
+        }
+    }
 }
 
 impl PackageList {
@@ -44,7 +60,31 @@ impl PackageList {
         Ok(me)
     }
 
-    pub fn install(&self, options: &InstallOptions) -> Result<()> {
+    pub fn install(path: &PathBuf, options: &InstallOptions) -> Result<()> {
+        cprintln(&format!(
+            "[green]+[/] Installing file [blue]{}[/]",
+            path.display()
+        ));
+        let toml_text = std::fs::read_to_string(&path)?;
+        match Self::deserialize(&toml_text) {
+            // TODO: Handle errors
+            Ok(list) => list.install_packages(&options)?,
+            Err(err) => {
+                let inner = err.to_string();
+                cprintln(&format!(
+                    "    [red]-  Error[/] parsing config file[green]{}[/]",
+                    path.display()
+                ));
+                eprintln!("{}", inner);
+                if !options.keep_running {
+                    std::process::exit(1);
+                }
+            }
+        }
+        Ok(())
+    }
+
+    pub fn install_packages(&self, options: &InstallOptions) -> Result<()> {
         for (name, package) in self.apt.iter() {
             package.install(&options)?;
         }

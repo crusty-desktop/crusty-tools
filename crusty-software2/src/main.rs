@@ -1,7 +1,7 @@
 use clap::Parser;
 use color_eyre::Result;
 // use console::{style, Emoji};
-use crusty_software::prelude::*;
+use crusty_software2::prelude::*;
 use indexmap::IndexMap;
 use std::path::PathBuf;
 use toml::de::Error;
@@ -84,7 +84,7 @@ fn main() -> Result<()> {
     // }
     //
     // let software_list: PackageList = toml::from_str(&std::fs::read_to_string(&file)?)
-    //     .expect(&format!("failed to serialize {}", &file.display()));
+    //     .expect(&format!("failed to serialize.rs {}", &file.display()));
     //
     // install_all_software(&software_list)?;
 

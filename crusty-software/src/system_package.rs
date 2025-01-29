@@ -1,5 +1,5 @@
 use crate::prelude::InstallOptions;
-use crate::provider::{AliasList, PackageProvider};
+use crate::provider::AliasList;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
@@ -10,6 +10,12 @@ pub struct SystemPackage {
     pub source: String,
     #[serde(default, flatten, skip_serializing_if = "IndexMap::is_empty")]
     pub alias: AliasList,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub repository: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub documentation: Option<String>,
 }
 
 impl SystemPackage {

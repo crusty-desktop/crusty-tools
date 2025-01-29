@@ -2,3 +2,4 @@
 .config
 /target
 Cargo.lock
+.bin/

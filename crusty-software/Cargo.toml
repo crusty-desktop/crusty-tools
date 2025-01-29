@@ -1,5 +1,9 @@
 [package]
 name = "crusty-software"
+description = "A handy tool to keep a list of installed software"
+authors = ["Giannis Tsagatakis (tsagatakis@protonmail.com)"]
+categories = ["command-line-interface"]
+keywords = ["omakase", "cosmic"]
 version = "0.1.0"
 edition = "2021"
 
@@ -8,5 +12,8 @@ indexmap = { version = "2.7.1", features = ["serde"] }
 toml = { version = "0.8.19", features = ["indexmap", "preserve_order"] }
 color-eyre = "0.6.3"
 color-eyre-attach-report = "0.6.2"
-tracing = "0.1.41"
 serde = { version = "1.0.217", features = ["derive"] }
+clap = { version = "4.5.27", features = ["derive"] }
+which = "7.0.1"
+dirs = "6.0.0"
+ctrem = "0.1.4"

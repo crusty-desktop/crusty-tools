@@ -1,4 +1,3 @@
-use crate::packages::Package;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::ops::Deref;
