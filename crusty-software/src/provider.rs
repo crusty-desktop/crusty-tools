@@ -39,7 +39,20 @@ pub trait PackageProvider {
     fn get_aliases(&self) -> &AliasList {
         &self.get_extras().alias
     }
+
+    fn check_if_installed(&self) -> bool {
+        false
+    }
+
     fn install(&self, options: &InstallOptions) -> Result<()> {
+        if self.check_if_installed() {
+            cprintln(&format!(
+                "   [blue]-  Skip[/] installing {}: [green]{}[/]",
+                self.package_type(),
+                self.get_source()
+            ));
+            return Ok(());
+        }
         self.installing_header();
 
         match crate::utils::run(&self.install_args(), options) {

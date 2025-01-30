@@ -7,10 +7,12 @@ use std::ops::{Deref, DerefMut};
 pub struct CustomPackage {
     #[serde(skip)]
     pub source: String,
-    #[serde(default, flatten)]
-    pub common_options: CommonOptions,
     #[serde(default)]
     pub script: String,
+    #[serde(default)]
+    pub command: Option<String>,
+    #[serde(default, flatten)]
+    pub common_options: CommonOptions,
 }
 
 impl PackageProvider for CustomPackage {
@@ -28,6 +30,14 @@ impl PackageProvider for CustomPackage {
 
     fn install_args(&self) -> Vec<&str> {
         vec!["sh", "-c", &self.script]
+    }
+
+    fn check_if_installed(&self) -> bool {
+        if let Some(cmd) = &self.command {
+            which::which(cmd).is_ok()
+        } else {
+            false
+        }
     }
 }
 
