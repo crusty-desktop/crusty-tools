@@ -3,6 +3,7 @@ use crate::provider::AliasList;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
+use std::process::Command;
 
 #[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct FlatpakPackage {
@@ -31,6 +32,15 @@ impl PackageProvider for FlatpakPackage {
 
     fn get_aliases(&self) -> &AliasList {
         &self.common_options.alias
+    }
+
+    fn check_if_installed(&self) -> bool {
+        let output = Command::new("flatpak").arg("list").output();
+        if let Ok(output) = output {
+            let output = String::from_utf8_lossy(&output.stdout);
+            return output.contains(&self.source);
+        }
+        false
     }
 }
 
