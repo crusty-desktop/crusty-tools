@@ -1,3 +1,4 @@
+use crate::custom_package::CustomPackageList;
 use crate::flatpak_package::FlatpakPackageList;
 use crate::prelude::RustPackageList;
 use crate::system_package::SystemPackageList;
@@ -59,7 +60,8 @@ pub trait PackageProvider {
 
     fn installing_header(&self) {
         cprintln(&format!(
-            "   [green]+[/] Installing flatpak package [blue]{}[/]",
+            "   [green]+[/] Installing [blue]{}[/] package [blue]{}[/]",
+            self.package_type(),
             self.get_source()
         ));
         if let Some(description) = &self.get_extras().description {
@@ -81,6 +83,7 @@ pub struct PackageList {
     pub apt: SystemPackageList,
     pub rust: RustPackageList,
     pub flatpak: FlatpakPackageList,
+    pub custom: CustomPackageList,
 }
 
 #[derive(Debug, Clone)]
@@ -118,19 +121,20 @@ impl PackageList {
         for (name, package) in me.flatpak.iter_mut() {
             package.source = name.clone();
         }
-
+        for (name, package) in me.custom.iter_mut() {
+            package.source = name.clone();
+        }
         Ok(me)
     }
 
     pub fn install(path: &PathBuf, options: &InstallOptions) -> Result<()> {
         cprintln(&format!(
-            "[green]+[/] Installing file [blue]{}[/]",
+            "[green]+[/] Installing file [bold][blue]{}[//]",
             path.display()
         ));
         let toml_text = std::fs::read_to_string(path)?;
-        let toml_text = format!("{}\n[apt]\n[rust]\n[flatpak]", toml_text);
+        let toml_text = format!("{}\n[apt]\n[rust]\n[flatpak]\n[custom]", toml_text);
         match Self::deserialize(&toml_text) {
-            // TODO: Handle errors
             Ok(list) => list.install_packages(options)?,
             Err(err) => {
                 let inner = err.to_string();
@@ -166,8 +170,7 @@ impl PackageList {
 
         let mut alias_file = OpenOptions::new().append(true).open(alias_filename)?;
 
-        let iter = self.apt.iter();
-        for (_name, package) in iter {
+        for (_name, package) in self.apt.iter() {
             package.install(options)?;
             Self::write_alias_to_file(&alias_lines, &mut alias_file, package)?;
         }
@@ -176,7 +179,13 @@ impl PackageList {
             package.install(options)?;
             Self::write_alias_to_file(&alias_lines, &mut alias_file, package)?;
         }
+
         for (_name, package) in self.flatpak.iter() {
+            package.install(options)?;
+            Self::write_alias_to_file(&alias_lines, &mut alias_file, package)?;
+        }
+
+        for (_name, package) in self.custom.iter() {
             package.install(options)?;
             Self::write_alias_to_file(&alias_lines, &mut alias_file, package)?;
         }

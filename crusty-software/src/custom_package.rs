@@ -1,5 +1,4 @@
 use crate::prelude::{CommonOptions, PackageProvider};
-use crate::provider::AliasList;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
@@ -8,23 +7,15 @@ use std::ops::{Deref, DerefMut};
 pub struct CustomPackage {
     #[serde(skip)]
     pub source: String,
-    #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
-    pub alias: AliasList,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub repository: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub documentation: Option<String>,
+    #[serde(default, flatten)]
+    pub common_options: CommonOptions,
+    #[serde(default)]
+    pub script: String,
 }
 
 impl PackageProvider for CustomPackage {
     fn get_source(&self) -> &str {
-        todo!()
-    }
-
-    fn get_aliases(&self) -> &AliasList {
-        &self.alias
+        self.source.as_str()
     }
 
     fn package_type(&self) -> &str {
@@ -32,11 +23,11 @@ impl PackageProvider for CustomPackage {
     }
 
     fn get_extras(&self) -> &CommonOptions {
-        todo!()
+        &self.common_options
     }
 
     fn install_args(&self) -> Vec<&str> {
-        todo!()
+        vec!["sh", "-c", &self.script]
     }
 }
 
