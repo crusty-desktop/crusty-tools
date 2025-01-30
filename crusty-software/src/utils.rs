@@ -23,10 +23,14 @@ pub fn run(args: &[&str], options: &InstallOptions) -> Result<()> {
 
         if !output.status.success() {
             // let exit_code = output.status.code().expect("no exit status");
-            return Err(eyre!("Command execution failed"));
+            return Err(eyre!("Exit code: {:?}", output.status.code().unwrap()));
         }
     } else {
-        let _ = command.output()?;
+        let output = command.stdout(std::process::Stdio::null()).status()?;
+        if !output.success() {
+            // let exit_code = output.status.code().expect("no exit status");
+            return Err(eyre!("Exit code: {:?}", output.code().unwrap()));
+        }
     }
     Ok(())
 }

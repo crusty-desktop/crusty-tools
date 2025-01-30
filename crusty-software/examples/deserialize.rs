@@ -2,33 +2,36 @@ use crusty_software::prelude::{InstallOptions, PackageList};
 
 const EXAMPLE: &str = r#"
 [apt.mc]
-source = "Description"
+repository = "Some repository"
+
+[apt.mc.alias]
 mc1 = "mc -f"
 mc2 = "mc -g"
 
-[flatpak."com.bitwarden.desktop"]
+[rust.eza]
+description = "A modern colorful ls"
+lsa = "eza --icons --hyperlink --color-scale --group-directories-first  --all"
 
-[apt.vim]
-vim1 = "vim -f"
-vim22 = "vim -g"
+[rust.eza.alias]
+ls = "eza --icons --hyperlink --color-scale --group-directories-first"
+lst = 'eza --tree --level=2 --long --icons --git'
+dir = "eza --icons --hyperlink -l -h --git"
+dirs = "eza --icons --hyperlink -l -h --git --color-scale --total-size"
 
-[rust.default1]
+[flatpak."dev.edfloreshz.CosmicTweaks"]
+repository = "https://github.com/cosmic-utils/tweaks"
 
-[apt.default2]
+[flatpak."dev.edfloreshz.CosmicTweaks".alias]
+cosmic_tweaks = "flatpak run dev.edfloreshz.CosmicTweaks"
 
-[rust.topgrade]
-
-[rust.starship]
-
-[flatpak."me.iepure.devtoolbox"]
 "#;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
     let list = PackageList::deserialize(&EXAMPLE)?;
-
-    let install_option = InstallOptions::default();
-    list.install(&install_option)?;
+    for package in list.apt.iter() {
+        println!("{:#?}", package);
+    }
 
     Ok(())
 }

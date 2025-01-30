@@ -1,6 +1,4 @@
-use crate::prelude::InstallOptions;
-use crate::provider::AliasList;
-use ctrem::cprintln;
+use crate::prelude::{CommonOptions, PackageProvider};
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::ops::{Deref, DerefMut};
@@ -9,51 +7,26 @@ use std::ops::{Deref, DerefMut};
 pub struct RustPackage {
     #[serde(skip)]
     pub source: String,
-    #[serde(default, flatten, skip_serializing_if = "IndexMap::is_empty")]
-    pub alias: AliasList,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub repository: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub documentation: Option<String>,
+    #[serde(default, flatten)]
+    pub common_options: CommonOptions,
 }
 
-impl RustPackage {
-    pub fn install(&self, options: &InstallOptions) -> color_eyre::Result<()> {
-        self.installing_header();
-        let args = vec!["cargo", "binstall", "-y", &self.source];
-        match crate::utils::run(&args, options) {
-            Ok(_) => {}
-            Err(_err) => {
-                cprintln(&format!(
-                    "   [red]-  Error[/] installing package: [green]{}[/]",
-                    self.source
-                ));
-                if !options.keep_running {
-                    std::process::exit(1);
-                }
-            }
-        }
-        Ok(())
+impl PackageProvider for RustPackage {
+    fn get_source(&self) -> &str {
+        self.source.as_str()
     }
 
-    fn installing_header(&self) {
-        cprintln(&format!(
-            "   [green]+[/] Installing rust package [blue]{}[/]",
-            self.source
-        ));
-        if let Some(description) = &self.description {
-            println!("     {}", description);
-        }
-        if let Some(text) = &self.repository {
-            println!("     - Repository: {}", text);
-        }
-        if let Some(text) = &self.documentation {
-            println!("     - Documentation: {}", text);
-        }
+    fn package_type(&self) -> &str {
+        "rust"
+    }
+    fn get_extras(&self) -> &CommonOptions {
+        &self.common_options
+    }
+    fn install_args(&self) -> Vec<&str> {
+        vec!["cargo", "binstall", "-y", &self.source]
     }
 }
+
 #[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]
 pub struct RustPackageList(pub IndexMap<String, RustPackage>);
 

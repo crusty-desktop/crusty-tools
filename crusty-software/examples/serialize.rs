@@ -9,6 +9,12 @@ fn main() {
             ("mc1".to_string(), "mc -f".to_string()),
             ("mc2".to_string(), "mc -g".to_string()),
         ]),
+        common_options: CommonOptions {
+            alias: Default::default(),
+            repository: Some("Some repository".to_string()),
+            description: None,
+            documentation: None,
+        },
         ..Default::default()
     };
 
@@ -22,7 +28,7 @@ fn main() {
 
     let system_package_list = SystemPackageList(IndexMap::from([
         ("mc".to_string(), package1),
-        ("vim".to_string(), package2),
+        ("dev.edfloreshz.CosmicTweaks".to_string(), package2),
         ("default1".to_string(), SystemPackage::default()),
         ("default2".to_string(), SystemPackage::default()),
     ]));
