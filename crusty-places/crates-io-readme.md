@@ -1,7 +1,9 @@
-# places-cli
+# crusty-places
+
 A handy tool for your scripts to get correct path names from known locations or XDG directories.
 
 ## Quick usage
+
 ```text
 Usage: places [OPTIONS] <location> [pathel]...
 
@@ -19,15 +21,18 @@ Options:
   -a, --app <program>
           Optional program to get paths
 ```
+
 See manpage for more info.
 
 ## Examples
+
 - Get a path like: _/home/alice/.config/gizmo/theme/colors.txt_
 
 ```shell
 places -a gizmo config theme colors.txt \
 places config gizmo theme colors.txt
 ```
+
 - List all config files for the _'gizmo'_ program
 
 ```shell
@@ -36,13 +41,13 @@ places --app=gizmo data | xargs lsd
 ```
 
 - Copy a config file
+
 ```shell
 cp gizmo_config.toml $(places -a gizmo config)
 ```
 
-
-
 - Get a folder inside `'Downloads dir'`, even if it is localized.
+
 ```shell
 places downloads Software
 ```

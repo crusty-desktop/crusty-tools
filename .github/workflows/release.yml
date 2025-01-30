@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  CRATE_NAME: places-cli
+  CRATE_NAME: crusty-places
   GITHUB_TOKEN: ${{ github.token }}
   RUST_BACKTRACE: 1
 
@@ -24,57 +24,57 @@ jobs:
             os: ubuntu-20.04
             target: x86_64-unknown-linux-musl
             bin: places
-            name: places-cli-Linux-x86_64-musl.tar.gz
+            name: crusty-places-Linux-x86_64-musl.tar.gz
 
           - os_name: Linux-aarch64
             os: ubuntu-20.04
             target: aarch64-unknown-linux-musl
             bin: places
-            name: places-cli-Linux-aarch64-musl.tar.gz
+            name: crusty-places-Linux-aarch64-musl.tar.gz
 
           - os_name: Linux-arm
             os: ubuntu-20.04
             target: arm-unknown-linux-musleabi
             bin: places
-            name: places-cli-Linux-arm-musl.tar.gz
+            name: crusty-places-Linux-arm-musl.tar.gz
 
           - os_name: Linux-i686
             os: ubuntu-20.04
             target: i686-unknown-linux-musl
             bin: places
-            name: places-cli-Linux-i686-musl.tar.gz
+            name: crusty-places-Linux-i686-musl.tar.gz
             skip_tests: true
 
           - os_name: Linux-riscv64
             os: ubuntu-20.04
             target: riscv64gc-unknown-linux-gnu
             bin: places
-            name: places-cli-Linux-riscv64gc-gnu.tar.gz
+            name: crusty-places-Linux-riscv64gc-gnu.tar.gz
 
           - os_name: Windows-aarch64
             os: windows-latest
             target: aarch64-pc-windows-msvc
             bin: places.exe
-            name: places-cli-Windows-aarch64.zip
+            name: crusty-places-Windows-aarch64.zip
             skip_tests: true
 
           - os_name: Windows-x86_64
             os: windows-latest
             target: x86_64-pc-windows-msvc
             bin: places.exe
-            name: places-cli-Windows-x86_64.zip
+            name: crusty-places-Windows-x86_64.zip
 
           - os_name: macOS-x86_64
             os: macOS-latest
             target: x86_64-apple-darwin
             bin: places
-            name: places-cli-Darwin-x86_64.tar.gz
+            name: crusty-places-Darwin-x86_64.tar.gz
 
           - os_name: macOS-aarch64
             os: macOS-latest
             target: aarch64-apple-darwin
             bin: places
-            name: places-cli-Darwin-aarch64.tar.gz
+            name: crusty-places-Darwin-aarch64.tar.gz
             skip_tests: true
         toolchain:
           - stable
@@ -111,6 +111,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          files: "places-cli-*"
+          files: "crusty-places-*"
           body_path: CHANGELOG.md
 

@@ -1,0 +1,105 @@
+[package]
+name = "crusty-places"
+version = "0.1.2"
+authors = ["Ioannis Tsagkatakis<tsagatakis@protonmail.com>"]
+license = "GPL-3.0"
+description = "A cli program to get file and directory locations from XDG"
+repository = "https://github.com/jtsagata/crusty-places"
+homepage = "https://github.com/jtsagata/crusty-places"
+readme = "crates-io-readme.md"
+categories = ["command-line-utilities"]
+keywords = ["cli", "xdg"]
+edition = "2021"
+
+
+[[bin]]
+name = "places"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5.7", features = ["derive", "cargo"] }
+directories = "5.0.1"
+
+[build-dependencies]
+clap = { version = "4.5.7", features = ["derive", "cargo"] }
+clap_mangen = "0.2.21"
+clap_complete = "4.5.5"
+
+[profile.release]
+lto = true
+debug = false
+
+###
+### .deb package related!
+###
+[package.metadata.deb]
+name = "crusty-places"
+extended-description = """\
+crusty-places is a handy tool for your scripts to always get correct path names for known locations or XDG directories.
+"""
+section = "utils"
+assets = [
+    # Binary
+    [
+        "target/release/places",
+        "usr/bin/",
+        "755",
+    ],
+    # Completions
+    [
+        "support/completions/places.bash",
+        "usr/share/bash-completion/completions/places",
+        "644",
+    ],
+    [
+        "support/completions/places.elv",
+        "usr/share/elvish/lib/",
+        "644",
+    ],
+    [
+        "support/completions/places.fish",
+        "usr/share/fish/vendor_completions.d/",
+        "644",
+    ],
+    [
+        "support/completions/_places",
+        "usr/share/zsh/vendor-completions/",
+        "644",
+    ],
+    # Manpage
+    [
+        "support/manpage/places.1",
+        "usr/share/man/man1/",
+        "644",
+    ],
+    # Misc files
+    [
+        "Readme.md",
+        "usr/share/doc/crusty-places/Readme.md",
+        "644",
+    ],
+    [
+        "CHANGELOG.md",
+        "usr/share/doc/crusty-places/",
+        "644",
+    ],
+]
+
+[package.metadata.deb.variants.arm64]
+depends = "libc6:arm64 (>= 2.28)"
+
+[package.metadata.deb.variants.armhf]
+depends = "libc6:armhf (>= 2.28)"
+
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/places", dest = "/usr/bin/", mode = "755" },
+    { source = "LICENSE", dest = "/usr/share/doc/places/", mode = "644" },
+    { source = "Readme.md", dest = "/usr/share/doc/places/", mode = "644" },
+    { source = "CHANGELOG.md", dest = "/usr/share/doc/places/", mode = "644" },
+    { source = "support/manpage/places.1.gz", dest = "/usr/share/man/man1/places.1.gz", mode = "644", doc = true },
+    { source = "support/completion/places.bash", dest = "/usr/share/bash-completion/completions/places", mode = "644" },
+    { source = "support/completion/places.fish", dest = "/usr/share/fish/vendor_completions.d/places.fish", mode = "644" },
+    { source = "support/completion/_places", dest = "/usr/share/zsh/vendor-completions/", mode = "644" },
+]

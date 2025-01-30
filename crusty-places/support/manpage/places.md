@@ -15,12 +15,13 @@ places - Get paths for common places
 **places** \[**OPTIONS**] <**location**> \[**pathel**]...
 
 # DESCRIPTION
+
 A handy tool for your scripts to get correct path names from known locations or XDG directories.
 
 
 # ARGUMENTS
- `<location>`
-: The  location. See table bellow for a list of known locations.
+`<location>`
+: The location. See table bellow for a list of known locations.
 
 
 `[pathel]...`
@@ -38,6 +39,7 @@ A handy tool for your scripts to get correct path names from known locations or 
 : Print version
 
 # LOCATION TABLE
+
 The following is the list of known locations
 
 ### **XDG** locations
@@ -56,7 +58,6 @@ The following is the list of known locations
 
 ### Common locations
 
-
 | name       | environment var  | example                    |
 |------------|------------------|----------------------------|
 | **config** | $XDG_CONFIG_HOME | _/home/alice/.config_      |
@@ -66,6 +67,7 @@ The following is the list of known locations
 | **data**   | $XDG_DATA_HOME   | _/home/alice/.local/share_ |
 
 ### Other locations
+
 Note the tool always return a full path, not paths starting with _'~/'_.
 
 | name            | example                       |
@@ -75,40 +77,41 @@ Note the tool always return a full path, not paths starting with _'~/'_.
 | **menus**       | _~/.local/share/applications_ |
 | **backgrounds** | _~/.local/share/backgrounds_  |
 
-
 # EXAMPLES
 
 But you can do much more with it
 
-### * Get a path like: _/home/alice/.config/gizmo/theme/colors.txt_
-   **\$** places -a gizmo config theme colors.txt \
-   **\$** places config gizmo theme colors.txt
+###  * Get a path like: _/home/alice/.config/gizmo/theme/colors.txt_
 
-### * List all config files for the _'gizmo'_ program
+**\$** places -a gizmo config theme colors.txt \
+**\$** places config gizmo theme colors.txt
 
-   **\$** lsd $(places --app=gizmo data) \
-   **\$** places --app=gizmo data | xargs lsd
+###  * List all config files for the _'gizmo'_ program
 
-### * Copy a config file
-   **\$** cp gizmo_config.toml $(places -a gizmo config)
+**\$** lsd $(places --app=gizmo data) \
+**\$** places --app=gizmo data | xargs lsd
 
+###  * Copy a config file
 
-### * Get a folder inside `'Downloads dir'`, even if it is localized.
-   **\$** places downloads Software
+**\$** cp gizmo_config.toml $(places -a gizmo config)
 
-   This returns something like _/home/alice/Descargas/Software_
+###  * Get a folder inside `'Downloads dir'`, even if it is localized.
 
+**\$** places downloads Software
+
+This returns something like _/home/alice/Descargas/Software_
 
 # ENVIRONMENT
+
 The list of environment variables that affect the operation is listed on the tables above.
 
 The **XDG** localized names is defined in the file _/etc/xdg/user-dirs.defaults_ and for each user
 in the file _$(XDG_CONFIG_HOME)/user-dirs.dirs_.
 
-
 # BUGS
 
-See GitHub Issues: _https://github.com/jtsagata/places-cli/issues_
+See GitHub Issues: _https://github.com/jtsagata/crusty-places/issues_
 
 # SEE ALSO
+
 **xdg-user-dir(1)**, **user-dirs.dirs(5)**
