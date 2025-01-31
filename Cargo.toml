@@ -1,3 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["crusty-software"]
+members = ["crusty-software", "crusty-places"]
+
+[profile.release]
+lto = true
+debug = false

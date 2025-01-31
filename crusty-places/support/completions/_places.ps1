@@ -21,12 +21,12 @@ Register-ArgumentCompleter -Native -CommandName 'places' -ScriptBlock {
 
     $completions = @(switch ($command) {
         'places' {
-            [CompletionResult]::new('-a', 'a', [CompletionResultType]::ParameterName, 'Optional program to get paths')
-            [CompletionResult]::new('--app', 'app', [CompletionResultType]::ParameterName, 'Optional program to get paths')
-            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help (see more with ''--help'')')
-            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help (see more with ''--help'')')
-            [CompletionResult]::new('-V', 'V ', [CompletionResultType]::ParameterName, 'Print version')
-            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Print version')
+            [CompletionResult]::new('-a', '-a', [CompletionResultType]::ParameterName, 'Optional program to get paths')
+            [CompletionResult]::new('--app', '--app', [CompletionResultType]::ParameterName, 'Optional program to get paths')
+            [CompletionResult]::new('-h', '-h', [CompletionResultType]::ParameterName, 'Print help (see more with ''--help'')')
+            [CompletionResult]::new('--help', '--help', [CompletionResultType]::ParameterName, 'Print help (see more with ''--help'')')
+            [CompletionResult]::new('-V', '-V ', [CompletionResultType]::ParameterName, 'Print version')
+            [CompletionResult]::new('--version', '--version', [CompletionResultType]::ParameterName, 'Print version')
             break
         }
     })

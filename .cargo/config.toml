@@ -1,2 +1,3 @@
 [alias]
 crusty-software = ["run", "--package", "crusty-software", "--bin", "crusty-software", "--"]
+crusty-places = ["run", "--package", "crusty-places", "--bin", "crusty-places", "--"]

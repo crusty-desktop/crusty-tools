@@ -22,7 +22,7 @@ _places() {
 '-V[Print version]' \
 '--version[Print version]' \
 ':location:(home desktop downloads templates documents pictures videos music public config bin cache state data autostart fonts menus backgrounds icons)' \
-'*::files -- Optional list of path elements to append:' \
+'*::files -- Optional list of path elements to append:_default' \
 && ret=0
 }
 
