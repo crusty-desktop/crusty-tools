@@ -2,19 +2,14 @@
 _default:
     just --list
 
-# Run clippy and format code
-check: _shellcheck _format
+# Run lints and format code
+check:
+    set -e
     cargo clippy --all
-
-# Check shell scripts
-_shellcheck:
-    fd -e sh -t f -X shellcheck
-
-# Format code
-_format:
     cargo fmt --all --check
     cargo fmt --all
+    # Check files
+    fd -e sh -t f -X shellcheck
 
 test:
     cargo nextest run
-

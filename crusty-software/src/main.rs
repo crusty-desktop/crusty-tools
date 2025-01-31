@@ -3,7 +3,7 @@ use crusty_software::cli::Cli;
 use crusty_software::prelude::*;
 use crusty_software::utils::{get_config, install_color_eyre};
 use crusty_software::APP_NAME;
-use std::path::PathBuf;
+use std::path::Path;
 
 fn main() -> color_eyre::Result<()> {
     install_color_eyre()?;
@@ -60,7 +60,7 @@ fn main() -> color_eyre::Result<()> {
     Ok(())
 }
 
-fn is_valid_filename(path: &PathBuf) -> bool {
+fn is_valid_filename(path: &Path) -> bool {
     // Files must have extension '.toml' and filename must not start with '_' or '.'
     path.is_file()
         && path
