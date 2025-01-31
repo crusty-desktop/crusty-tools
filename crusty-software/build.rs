@@ -1,4 +1,5 @@
 use clap::CommandFactory;
+use clap::ValueEnum;
 use clap_complete::generate_to;
 use clap_complete::shells::*;
 
@@ -7,7 +8,7 @@ include!("src/cli.rs");
 fn main() {
     let outdir = "../support/completions";
     let mut app = Cli::command();
-    let bin_name = "crusty-places";
+    let bin_name = "crusty-software";
 
     for &shell in Shell::value_variants() {
         generate_to(shell, &mut app, bin_name, outdir)

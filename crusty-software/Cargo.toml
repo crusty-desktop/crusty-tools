@@ -11,9 +11,13 @@ edition = "2021"
 indexmap = { version = "2.7.1", features = ["serde"] }
 toml = { version = "0.8.19", features = ["indexmap", "preserve_order"] }
 color-eyre = "0.6.3"
-color-eyre-attach-report = "0.6.2"
 serde = { version = "1.0.217", features = ["derive"] }
 clap = { version = "4.5.27", features = ["derive"] }
 which = "7.0.1"
 dirs = "6.0.0"
 ctrem = "0.1.4"
+
+[build-dependencies]
+clap = { version = "4.5.7", features = ["derive", "cargo"] }
+clap_mangen = "0.2.21"
+clap_complete = "4.5.5"

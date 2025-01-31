@@ -1,35 +1,14 @@
 use clap::Parser;
-use crusty_software::prelude::{InstallOptions, PackageList};
+use crusty_software::cli::Cli;
+use crusty_software::prelude::*;
 use crusty_software::utils::{get_config, install_color_eyre};
 use crusty_software::APP_NAME;
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(version, about, long_about = None)]
-struct CommandLineArgs {
-    /// Config location file or directory
-    #[arg(
-        short,
-        long,
-        value_name = "FILE|DIR",
-        value_hint = clap::ValueHint::AnyPath
-    )]
-    config: Option<PathBuf>,
-    /// Verbose output
-    #[arg(short, long)]
-    verbose: bool,
-    /// Dry run
-    #[arg(short, long)]
-    dry_run: bool,
-    /// Keep running if a step failed
-    #[arg(short, long)]
-    keep: bool,
-}
-
 fn main() -> color_eyre::Result<()> {
     install_color_eyre()?;
 
-    let cli = CommandLineArgs::parse();
+    let cli = Cli::parse();
 
     let options = InstallOptions {
         verbose: cli.verbose,
@@ -46,6 +25,7 @@ fn main() -> color_eyre::Result<()> {
     if !config.exists() {
         // TODO: Nice reporting
         eprintln!("Error: Path {} not found on filesystem", config.display());
+        report_install_instructions();
         std::process::exit(1);
     }
 
@@ -53,21 +33,43 @@ fn main() -> color_eyre::Result<()> {
         // No check on filename here
         PackageList::install(&config, &options)?;
     } else {
-        for entry in std::fs::read_dir(&config)? {
-            let entry = entry?;
-            let path = entry.path();
-            // Files must have extension '.toml' and filename must not start with '_' or '.'
-            if path.is_file()
-                && path
-                    .file_name()
-                    .and_then(|n| n.to_str())
-                    .map_or(true, |f| !f.starts_with('_') && !f.starts_with('.'))
-                && path.extension().and_then(|ext| ext.to_str()) == Some("toml")
-            {
+        let mut file_lists = std::fs::read_dir(&config)?.collect::<Vec<_>>();
+        if file_lists.is_empty() {
+            eprintln!("Error: No config files found in {}", config.display());
+            report_install_instructions();
+            std::process::exit(1);
+        }
+
+        // Sort by file name
+        file_lists.sort_by_key(|entry| {
+            entry
+                .as_ref()
+                .ok()
+                .map(|e| e.file_name())
+                .map(|name| name.to_string_lossy().to_string())
+        });
+
+        for entry in file_lists {
+            let path = entry?.path();
+            if is_valid_filename(&path) {
                 PackageList::install(&path, &options)?;
             }
         }
     }
 
     Ok(())
+}
+
+fn is_valid_filename(path: &PathBuf) -> bool {
+    // Files must have extension '.toml' and filename must not start with '_' or '.'
+    path.is_file()
+        && path
+            .file_name()
+            .and_then(|n| n.to_str())
+            .map_or(true, |f| !f.starts_with('_') && !f.starts_with('.'))
+        && path.extension().and_then(|ext| ext.to_str()) == Some("toml")
+}
+
+fn report_install_instructions() {
+    println!("TODO: How to install");
 }

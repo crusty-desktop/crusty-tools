@@ -1,4 +1,4 @@
-use crusty_software::prelude::PackageList;
+use crusty_software::package_list::PackageList;
 
 const EXAMPLE: &str = r#"
 [apt.mc]

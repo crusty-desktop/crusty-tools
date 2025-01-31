@@ -1,4 +1,4 @@
-use crate::prelude::InstallOptions;
+use crate::prelude::*;
 use color_eyre::eyre::eyre;
 use color_eyre::eyre::ContextCompat;
 use color_eyre::Result;

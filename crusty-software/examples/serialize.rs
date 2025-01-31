@@ -1,5 +1,6 @@
 use crusty_software::custom_package::{CustomPackage, CustomPackageList};
 use crusty_software::flatpak_package::FlatpakPackageList;
+use crusty_software::package_list::PackageList;
 use crusty_software::prelude::*;
 use crusty_software::system_package::{SystemPackage, SystemPackageList};
 use indexmap::IndexMap;
@@ -40,6 +41,7 @@ tar xf lazygit.tar.gz lazygit
 sudo install lazygit -D -t /usr/local/bin/
                 "#
                 .to_string(),
+                command: None,
             },
         )]),
     };

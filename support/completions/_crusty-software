@@ -1,0 +1,43 @@
+#compdef crusty-software
+
+autoload -U is-at-least
+
+_crusty-software() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'-c+[Config location file or directory]:FILE|DIR:_files' \
+'--config=[Config location file or directory]:FILE|DIR:_files' \
+'-v[Verbose output]' \
+'--verbose[Verbose output]' \
+'-d[Dry run]' \
+'--dry-run[Dry run]' \
+'-k[Keep running if a step failed]' \
+'--keep[Keep running if a step failed]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+}
+
+(( $+functions[_crusty-software_commands] )) ||
+_crusty-software_commands() {
+    local commands; commands=()
+    _describe -t commands 'crusty-software commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_crusty-software" ]; then
+    _crusty-software "$@"
+else
+    compdef _crusty-software crusty-software
+fi
